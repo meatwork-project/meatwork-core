@@ -1,5 +1,5 @@
 import com.google.inject.Module;
-import com.meatwork.tools.module.ToolsModule;
+import com.meatwork.tools.api.module.ToolsModule;
 
 /*
  * Copyright (c) 2016 Taliro.
@@ -14,11 +14,10 @@ module com.meatwork.tools {
 
 	uses Module;
 
-	exports com.meatwork.tools.event;
-	exports com.meatwork.tools.di;
-	exports com.meatwork.tools.scanner;
-	exports com.meatwork.tools.service;
-	exports com.meatwork.tools.api;
+	exports com.meatwork.tools.api.event;
+	exports com.meatwork.tools.api.di;
+	exports com.meatwork.tools.api.scanner;
+	exports com.meatwork.tools.api.service;
 
 	provides Module with ToolsModule;
 }
