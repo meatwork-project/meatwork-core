@@ -42,17 +42,36 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>deploy-tools</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${project.basedir}/target/meatwork-tools-${revision}.jar</file>
+                            <repositoryId>github</repositoryId>
+                            <url>https://maven.pkg.github.com/meatwork-project/meatwork-tools</url>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
     <distributionManagement>
         <repository>
-            <id>github tools</id>
-            <name>Meatwork-tools</name>
+            <id>github</id>
+            <name>meatwork-tools</name>
             <url>https://maven.pkg.github.com/meatwork-project/meatwork-tools</url>
         </repository>
-
-
     </distributionManagement>
 
 </project>
