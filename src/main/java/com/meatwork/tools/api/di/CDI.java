@@ -1,15 +1,14 @@
 package com.meatwork.tools.api.di;
 
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Key;
 import com.google.inject.Module;
-import com.google.inject.TypeLiteral;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.ServiceLoader;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 /*
  * Copyright (c) 2016 Taliro.
@@ -17,17 +16,32 @@ import java.util.Set;
  */
 public final class CDI {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(CDI.class);
+
 	private final static Injector injector;
 
-	private CDI() {
+	static {
+		List<Module> list = ServiceLoader
+				.load(Module.class)
+				.stream()
+				.map(ServiceLoader.Provider::get)
+				.toList();
+
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Module list : {}",
+			             list
+					             .stream()
+					             .map(it -> it
+							             .getClass()
+							             .getName())
+					             .collect(Collectors.joining(", "))
+			);
+		}
+
+		injector = Guice.createInjector(list);
 	}
 
-	static {
-		injector = Guice.createInjector(ServiceLoader
-				                                .load(Module.class)
-				                                .stream()
-				                                .map(ServiceLoader.Provider::get)
-				                                .toList());
+	private CDI() {
 	}
 
 	public static <T> T get(Class<T> clazz) {
