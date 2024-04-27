@@ -29,10 +29,6 @@ public final class Event {
 
 	}
 
-	public static void register(Object register) {
-		eventBus.register(register);
-	}
-
 	private Event() {
 	}
 
