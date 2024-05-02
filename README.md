@@ -1,8 +1,6 @@
-# Features
+# USAGE
 
-## USAGE
-
-### Single implementation
+## Single implementation
 
 ```java
 @IService
@@ -44,7 +42,7 @@ public class AnServiceImpl2 implements AnService2 {
 }
 ```
 
-### Multi implementation
+## Multi implementation
 
 ```java
 import com.meatwork.core.api.di.Service;
