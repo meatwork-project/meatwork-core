@@ -1,7 +1,7 @@
-package com.meatwork.tools.api.service;
+package com.meatwork.core.api.service;
 
-import com.meatwork.tools.api.di.CDI;
-import com.meatwork.tools.internal.tools.ConsummerThrow;
+import com.meatwork.core.api.di.CDI;
+import com.meatwork.core.internal.tools.ConsummerThrow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

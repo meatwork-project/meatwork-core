@@ -1,4 +1,4 @@
-package com.meatwork.tools.internal.tools;
+package com.meatwork.core.internal.tools;
 
 /*
  * Copyright (c) 2016 Taliro.

@@ -1,4 +1,4 @@
-package com.meatwork.tools.api.service;
+package com.meatwork.core.api.service;
 
 import jakarta.inject.Inject;
 

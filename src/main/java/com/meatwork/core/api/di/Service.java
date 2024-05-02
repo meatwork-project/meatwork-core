@@ -1,4 +1,4 @@
-package com.meatwork.tools.api.event;
+package com.meatwork.core.api.di;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,5 +11,11 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EventListener {
+public @interface Service {
+	enum Scope {
+		SINGLETON,
+		BY_INSTANCE
+	}
+
+	Scope scope() default Scope.SINGLETON;
 }
