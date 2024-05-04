@@ -8,6 +8,8 @@ module com.meatwork.core.test {
 	requires org.junit.jupiter.api;
 	requires jakarta.inject;
 
+	exports com.meatwork.core.test.service;
+
 	opens com.meatwork.core.test;
 	opens com.meatwork.core.test.service;
 }
