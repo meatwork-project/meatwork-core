@@ -7,11 +7,18 @@
         <groupId>com.meatwork</groupId>
         <artifactId>meatwork</artifactId>
         <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>meatwork-core</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -37,6 +44,18 @@
             <groupId>jakarta.inject</groupId>
             <artifactId>jakarta.inject-api</artifactId>
             <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback-classic.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
