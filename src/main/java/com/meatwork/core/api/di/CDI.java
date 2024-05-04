@@ -5,6 +5,8 @@ import com.meatwork.core.internal.di.MultiBinding;
 import com.meatwork.core.internal.di.ObjectGraph;
 import com.meatwork.core.internal.di.Singleton;
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
@@ -15,6 +17,8 @@ import java.util.Set;
  */
 public final class CDI {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(CDI.class);
+
 	static {
 		List<String> list = ModuleLayer
 				.boot()
@@ -24,6 +28,9 @@ public final class CDI {
 						.getPackages()
 						.stream())
 				.toList();
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("package {} found", String.join(", ", list));
+		}
 		Reflections reflections = new Reflections(list);
 		Set<Class<?>> subTypesOf = reflections.getTypesAnnotatedWith(Service.class);
 		for (Class<?> aClass : subTypesOf) {
@@ -41,11 +48,11 @@ public final class CDI {
 						multiBinding.addBinding(aClass);
 						ObjectGraph.register(multiBinding);
 					} else {
-						ObjectGraph.register(new Singleton(anInterface, aClass));
+						ObjectGraph.register(new Singleton<>(anInterface, aClass));
 					}
 				}
 			} else {
-				ObjectGraph.register(new Singleton(aClass, aClass));
+				ObjectGraph.register(new Singleton<>(aClass, aClass));
 			}
 		}
 	}
