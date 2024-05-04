@@ -40,7 +40,7 @@ public final class CDI {
 			if (aClass.getInterfaces().length > 0) {
 				for (Class<?> anInterface : aClass.getInterfaces()) {
 					IService annotationsByType = anInterface.getAnnotation(IService.class);
-					if(annotationsByType.scope().equals(IService.Scope.MULTIPLE)) {
+					if(annotationsByType != null && annotationsByType.scope().equals(IService.Scope.MULTIPLE)) {
 						Factory<?> factory = ObjectGraph.get(anInterface);
 						MultiBinding<?> multiBinding;
 						if(factory != null) {

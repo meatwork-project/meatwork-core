@@ -1,5 +1,6 @@
 package com.meatwork.core.internal.di;
 
+import com.meatwork.core.api.di.IService;
 import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +43,15 @@ public class Injector {
 				for (Parameter parameter : parameters) {
 					Class<?> type = parameter.getType();
 					if (type.isAssignableFrom(Set.class)) {
-						Class<?> actualTypeArgument = (Class<?>)((ParameterizedType) parameter.getParameterizedType()).getActualTypeArguments()[0];
-						Factory<?> factory = ObjectGraph.get(actualTypeArgument);
+						Object actualTypeArgument = ((ParameterizedType) parameter.getParameterizedType()).getActualTypeArguments()[0];
+						Class<?> actualTypeClass;
+						if (actualTypeArgument instanceof ParameterizedType parameterType) {
+							actualTypeClass = (Class<?>) parameterType.getRawType();
+						} else {
+							actualTypeClass = (Class<?>) actualTypeArgument;
+						}
+
+						Factory<?> factory = ObjectGraph.get(actualTypeClass);
 						if(!(factory instanceof MultiBinding<?>)) {
 							LOGGER.error("type {} is not a multi-binding", type);
 							throw new RuntimeException("type " + type + " is not a multi-binding");
@@ -51,7 +59,16 @@ public class Injector {
 						args.add(factory.get());
 					} else if (type.isInterface()){
 						Factory<?> factory = ObjectGraph.get(type);
-						args.add(factory.get());
+
+						if (factory == null && type.getAnnotation(IService.class).mandatory()) {
+							String message = "Cannot found class of type " + type.getName();
+							LOGGER.error(message);
+							throw new RuntimeException(message);
+						} else if (factory == null && !type.getAnnotation(IService.class).mandatory()) {
+							args.add(null);
+						} else {
+							args.add(factory.get());
+						}
 					} else {
 						args.add(Injector.create(type));
 					}

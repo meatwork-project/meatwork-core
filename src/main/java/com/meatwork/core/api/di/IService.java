@@ -18,5 +18,6 @@ public @interface IService {
 	}
 
 	Scope scope() default Scope.SINGLE;
+	boolean mandatory() default true;
 
 }
