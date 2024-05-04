@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /*
@@ -28,11 +29,13 @@ public final class CDI {
 						.getPackages()
 						.stream())
 				.toList();
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("package {} found", String.join(", ", list));
-		}
 		Reflections reflections = new Reflections(list);
 		Set<Class<?>> subTypesOf = reflections.getTypesAnnotatedWith(Service.class);
+
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("service {} found", subTypesOf);
+		}
+
 		for (Class<?> aClass : subTypesOf) {
 			if (aClass.getInterfaces().length > 0) {
 				for (Class<?> anInterface : aClass.getInterfaces()) {
@@ -61,7 +64,7 @@ public final class CDI {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T get(Class<T> clazz) {
-		return (T) ObjectGraph.get(clazz).get();
+		return (T) Optional.of(ObjectGraph.get(clazz)).map(Factory::get).orElse(null);
 	}
 
 }
