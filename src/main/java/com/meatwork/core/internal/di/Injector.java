@@ -52,6 +52,13 @@ public class Injector {
 						}
 
 						Factory<?> factory = ObjectGraph.get(actualTypeClass);
+
+						IService annotation = actualTypeClass.getAnnotation(IService.class);
+						if(!annotation.mandatory() && factory == null) {
+							args.add(null);
+							continue;
+						}
+
 						if(!(factory instanceof MultiBinding<?>)) {
 							LOGGER.error("type {} is not a multi-binding", type);
 							throw new RuntimeException("type " + type + " is not a multi-binding");
@@ -60,11 +67,12 @@ public class Injector {
 					} else if (type.isInterface()){
 						Factory<?> factory = ObjectGraph.get(type);
 
-						if (factory == null && type.getAnnotation(IService.class).mandatory()) {
+						IService annotation = type.getAnnotation(IService.class);
+						if (factory == null && annotation.mandatory()) {
 							String message = "Cannot found class of type " + type.getName();
 							LOGGER.error(message);
 							throw new RuntimeException(message);
-						} else if (factory == null && !type.getAnnotation(IService.class).mandatory()) {
+						} else if (factory == null) {
 							args.add(null);
 						} else {
 							args.add(factory.get());
