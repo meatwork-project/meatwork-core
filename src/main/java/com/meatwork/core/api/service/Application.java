@@ -19,13 +19,18 @@ public class Application {
 		try {
 			ApplicationStartupSet applicationStartupSet = CDI
 					.get(ApplicationStartupSet.class);
-			applicationStartupSet
-					.getApplicationStartups()
-					.stream()
-					.sorted(Comparator.comparingInt(ApplicationStartup::priority))
-					.forEach(it -> catcher(it::run, args));
+
+			if(applicationStartupSet.getApplicationStartups() != null) {
+				applicationStartupSet
+						.getApplicationStartups()
+						.stream()
+						.sorted(Comparator.comparingInt(ApplicationStartup::priority))
+						.forEach(it -> catcher(it::run, args));
+			} else {
+				LOG.info("No application startup found");
+			}
 		} catch (Exception e) {
-			LOG.info("No applicationStartup detected");
+			LOG.error("Error on startupApp {}", e.getMessage());
 		}
 	}
 

@@ -61,7 +61,7 @@ public class Injector {
 
 						if(!(factory instanceof MultiBinding<?>)) {
 							LOGGER.error("type {} is not a multi-binding", type);
-							throw new RuntimeException("type " + type + " is not a multi-binding");
+							throw new RuntimeException("type " + actualTypeClass + " is not a multi-binding");
 						}
 						args.add(factory.get());
 					} else if (type.isInterface()){
