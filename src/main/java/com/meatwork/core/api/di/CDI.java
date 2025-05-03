@@ -31,10 +31,7 @@ public final class CDI {
 				.toList();
 		Reflections reflections = new Reflections(list);
 		Set<Class<?>> subTypesOf = reflections.getTypesAnnotatedWith(Service.class);
-
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("service {} found", subTypesOf);
-		}
+		LOGGER.debug("service {} found", subTypesOf);
 
 		for (Class<?> aClass : subTypesOf) {
 			if (aClass.getInterfaces().length > 0) {
