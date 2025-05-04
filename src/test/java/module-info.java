@@ -6,7 +6,6 @@ module com.meatwork.core.test {
 
 	requires com.meatwork.core;
 	requires org.junit.jupiter.api;
-	requires jakarta.inject;
 
 	exports com.meatwork.core.test.service;
 

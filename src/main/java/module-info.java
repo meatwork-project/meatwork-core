@@ -3,10 +3,9 @@
  * All rights reserved.
  */
 module com.meatwork.core {
-	requires org.slf4j;
 	requires org.reflections;
-	requires jakarta.inject;
-
+	requires transitive org.slf4j;
+	requires transitive jakarta.inject;
 	exports com.meatwork.core.api.di;
 	exports com.meatwork.core.api.service;
 }
