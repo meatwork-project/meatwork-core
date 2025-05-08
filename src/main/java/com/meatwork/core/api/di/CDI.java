@@ -38,13 +38,7 @@ public final class CDI {
 				for (Class<?> anInterface : aClass.getInterfaces()) {
 					IService annotationsByType = anInterface.getAnnotation(IService.class);
 					if(annotationsByType != null && annotationsByType.scope().equals(IService.Scope.MULTIPLE)) {
-						Factory<?> factory = ObjectGraph.get(anInterface);
-						MultiBinding<?> multiBinding;
-						if(factory != null) {
-							multiBinding = (MultiBinding<?>) factory;
-						} else {
-							multiBinding = new MultiBinding<>(anInterface);
-						}
+						MultiBinding<?> multiBinding = ObjectGraph.getOrDefault(anInterface, MultiBinding.class);
 						multiBinding.addBinding(aClass);
 						ObjectGraph.register(multiBinding);
 					} else {
