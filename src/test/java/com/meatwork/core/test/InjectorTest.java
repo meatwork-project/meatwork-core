@@ -6,7 +6,6 @@ import com.meatwork.core.test.service.AnService2;
 import com.meatwork.core.test.service.Validator;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -18,16 +17,16 @@ import java.util.Set;
 public class InjectorTest {
 
 	@Test
-	@Disabled
 	public void testInject() {
+		CDI.init(MainApplicationTest.class);
 		ValidatorSet validator = CDI.get(ValidatorSet.class);
 		Assertions.assertNotNull(validator);
 		Assertions.assertTrue(validator.getValidatorSet().stream().allMatch(Validator::run));
 	}
 
 	@Test
-	@Disabled
 	public void testInhjectDeep() {
+		CDI.init(MainApplicationTest.class);
 		AnService2 anService2 = CDI.get(AnService2.class);
 		Assertions.assertNotNull(anService2);
 		Assertions.assertTrue(anService2.isRun());

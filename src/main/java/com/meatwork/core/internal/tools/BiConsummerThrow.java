@@ -5,6 +5,6 @@ package com.meatwork.core.internal.tools;
  * All rights reserved.
  */
 @FunctionalInterface
-public interface ConsummerThrow {
-	void run(String[] args) throws Exception;
+public interface BiConsummerThrow {
+	void run(Class<?> applicationCls, String[] args) throws Exception;
 }

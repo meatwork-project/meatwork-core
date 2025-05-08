@@ -1,5 +1,6 @@
 package com.meatwork.core.api.di;
 
+import com.meatwork.core.api.service.MeatworkApplication;
 import com.meatwork.core.internal.di.Factory;
 import com.meatwork.core.internal.di.MultiBinding;
 import com.meatwork.core.internal.di.ObjectGraph;
@@ -8,9 +9,7 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /*
  * Copyright (c) 2016 Taliro.
@@ -20,15 +19,16 @@ public final class CDI {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CDI.class);
 
-	static {
-		List<String> list = ModuleLayer
-				.boot()
-				.modules()
-				.stream()
-				.flatMap(it -> it
-						.getPackages()
-						.stream())
-				.toList();
+	public static void init(Class<?> applicationCls) {
+		MeatworkApplication annotation = applicationCls.getAnnotation(MeatworkApplication.class);
+
+		if(annotation == null) {
+            LOGGER.error("No MeatworkApplication annotation found for main class {}", applicationCls.getName());
+			return;
+		}
+
+		var list = new ArrayList<>(Arrays.asList(annotation.packages()));
+		list.add("com.meatwork");
 		Reflections reflections = new Reflections(list);
 		Set<Class<?>> subTypesOf = reflections.getTypesAnnotatedWith(Service.class);
 		LOGGER.debug("service {} found", subTypesOf);

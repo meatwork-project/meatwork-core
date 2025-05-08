@@ -1,7 +1,7 @@
 package com.meatwork.core.api.service;
 
 import com.meatwork.core.api.di.CDI;
-import com.meatwork.core.internal.tools.ConsummerThrow;
+import com.meatwork.core.internal.tools.BiConsummerThrow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +15,9 @@ public class Application {
 
 	private final static Logger LOG = LoggerFactory.getLogger(Application.class);
 
-	public static void run(String[] args) {
+	public static void run(Class<?> applicationCls, String[] args) {
 		try {
+			CDI.init(applicationCls);
 			ApplicationStartupSet applicationStartupSet = CDI
 					.get(ApplicationStartupSet.class);
 
@@ -25,7 +26,7 @@ public class Application {
 						.getApplicationStartups()
 						.stream()
 						.sorted(Comparator.comparingInt(ApplicationStartup::priority))
-						.forEach(it -> catcher(it::run, args));
+						.forEach(it -> catcher(it::run, applicationCls, args));
 			} else {
 				LOG.info("No application startup found");
 			}
@@ -34,13 +35,13 @@ public class Application {
 		}
 	}
 
-	public static void run() {
-		run(null);
+	public static void run(Class<?> applicationCls) {
+		run(applicationCls, null);
 	}
 
-	private static void catcher(ConsummerThrow runnable, String[] args) {
+	private static void catcher(BiConsummerThrow runnable, Class<?> applicationCls, String[] args) {
 		try {
-			runnable.run(args);
+			runnable.run(applicationCls, args);
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
 			throw new RuntimeException(e);

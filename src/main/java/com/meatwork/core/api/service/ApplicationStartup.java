@@ -11,5 +11,5 @@ public interface ApplicationStartup {
 	default int priority() {
 		return 100;
 	}
-	void run(String[] args) throws Exception;
+	void run(Class<?> ApplicationCls, String[] args) throws Exception;
 }
